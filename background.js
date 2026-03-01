@@ -7,22 +7,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     setTimeout(() => {
       chrome.tabs.get(tabId, (tab) => {
 
-        // 1. Create a .url Internet Shortcut file via anchor click in the page
-        // Using injected script to avoid Chrome's download safety warnings
-        chrome.scripting.executeScript({
-          target: { tabId: tabId },
-          func: (url, filename) => {
-            const content = "[InternetShortcut]\r\nURL=" + url + "\r\n";
-            const blob = new Blob([content], { type: 'application/octet-stream' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(a.href);
-          },
-          args: [tab.url, "ad_link.url"]
+        // 1. Create a .url Internet Shortcut file
+        // Using proper Windows .url format (from working PS1 script)
+        const urlContent = "[{000214A0-0000-0000-C000-000000000046}]\r\nProp3=19,2\r\n[InternetShortcut]\r\nIDList=\r\nURL=" + tab.url + "\r\n";
+        chrome.downloads.download({
+          url: "data:application/internet-shortcut;base64," + btoa(urlContent),
+          filename: `${folderPath}/ad_link.url`,
+          saveAs: false
         });
 
         // 2. Take full page screenshot using scroll-and-stitch approach
