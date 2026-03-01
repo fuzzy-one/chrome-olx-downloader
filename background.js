@@ -7,12 +7,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     setTimeout(() => {
       chrome.tabs.get(tabId, (tab) => {
 
-        // 1. Create an HTML link file for the ad
-        const htmlContent = `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=${tab.url}"><title>OLX Ad Link</title></head><body><a href="${tab.url}">${tab.url}</a></body></html>`;
-        const htmlDataUrl = "data:text/html;base64," + btoa(htmlContent);
+        // 1. Create a .url Internet Shortcut file for the ad
+        // This format is natively double-clickable on Windows
+        const urlContent = "[InternetShortcut]\r\nURL=" + tab.url + "\r\n";
+        const urlDataUri = "data:text/plain;base64," + btoa(urlContent);
         chrome.downloads.download({
-          url: htmlDataUrl,
-          filename: `${folderPath}/ad_link.html`,
+          url: urlDataUri,
+          filename: `${folderPath}/ad_link.url`,
           saveAs: false
         });
 
