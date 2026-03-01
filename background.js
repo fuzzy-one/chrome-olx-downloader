@@ -7,14 +7,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     setTimeout(() => {
       chrome.tabs.get(tabId, (tab) => {
 
-        // 1. Create a .url Internet Shortcut file for the ad
-        // This format is natively double-clickable on Windows
-        const urlContent = "[InternetShortcut]\r\nURL=" + tab.url + "\r\n";
-        const urlDataUri = "data:application/octet-stream;base64," + btoa(urlContent);
-        chrome.downloads.download({
-          url: urlDataUri,
-          filename: `${folderPath}/ad_link.url`,
-          saveAs: false
+        // 1. Create a .url Internet Shortcut file via anchor click in the page
+        // Using injected script to avoid Chrome's download safety warnings
+        chrome.scripting.executeScript({
+          target: { tabId: tabId },
+          func: (url, filename) => {
+            const content = "[InternetShortcut]\r\nURL=" + url + "\r\n";
+            const blob = new Blob([content], { type: 'application/octet-stream' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+          },
+          args: [tab.url, "ad_link.url"]
         });
 
         // 2. Take full page screenshot using scroll-and-stitch approach
