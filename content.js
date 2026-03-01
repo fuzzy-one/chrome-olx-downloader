@@ -6,19 +6,20 @@ if (!window.__olxContentScriptLoaded) {
         if (message.type === "EXTRACT") {
             const urls = new Set();
 
-            // Find all images that look like they could be ad images
-            const images = Array.from(document.querySelectorAll('img'));
-
-            images.forEach(img => {
-                let url = img.src;
-
-                // OLX uses CDN for images, typically apollo.olxcdn.com
-                if (url && url.includes('apollo.olxcdn.com') && !url.includes('avatar')) {
-                    // Remove size parameters like ;s=1000x700 to try to get the original/highest resolution
-                    url = url.replace(/;s=\d+x\d+/, '');
-                    urls.add(url);
-                }
-            });
+            // Only grab images from the MAIN ad carousel (first swiper-wrapper)
+            const carousel = document.querySelector('.swiper-wrapper');
+            if (carousel) {
+                const images = Array.from(carousel.querySelectorAll('img'));
+                images.forEach(img => {
+                    let url = img.src;
+                    // OLX uses CDN for images, typically apollo.olxcdn.com
+                    if (url && url.includes('apollo.olxcdn.com') && !url.includes('avatar')) {
+                        // Remove size parameters like ;s=1000x700 to try to get the original/highest resolution
+                        url = url.replace(/;s=\d+x\d+/, '');
+                        urls.add(url);
+                    }
+                });
+            }
 
             const imageUrls = Array.from(urls);
 
