@@ -1,0 +1,5 @@
+.venv/
+generate_icons.py
+generate_icons.js
+svg_notes.js
+icons.md

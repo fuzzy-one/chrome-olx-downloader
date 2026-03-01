@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "OLX Downloader",
+  "version": "1.0",
+  "description": "Downloads images and takes a screenshot of the current OLX ad.",
+  "action": {
+    "default_title": "Download OLX Images & Screenshot",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon_inactive_16.png",
+      "48": "icon_inactive_48.png"
+    }
+  },
+  "icons": {
+    "16": "icon_active_16.png",
+    "48": "icon_active_48.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "activeTab",
+    "downloads",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+  "options_page": "options.html",
+  "host_permissions": [
+    "*://*.olx.ro/*"
+  ]
+}

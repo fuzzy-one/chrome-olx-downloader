@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 15px; 
+      width: 320px; 
+      background-color: #f2f4f5;
+      color: #002f34;
+      margin: 0;
+    }
+    h4 { 
+      margin-top: 0; 
+      margin-bottom: 10px; 
+      font-size: 16px;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    input[type="text"] { 
+      width: 100%; 
+      padding: 8px; 
+      box-sizing: border-box; 
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    button { 
+      width: 100%; 
+      padding: 10px; 
+      background: #002f34; 
+      color: white; 
+      border: none; 
+      border-radius: 4px;
+      cursor: pointer; 
+      font-size: 14px;
+      font-weight: bold;
+    }
+    button:hover { 
+      background: #00424a; 
+    }
+    button:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h4>Download Folder Name</h4>
+  <div class="input-group">
+    <input type="text" id="folderName" placeholder="Loading ad details..." />
+  </div>
+  <button id="downloadBtn">Download Images & Screenshot</button>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
