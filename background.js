@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // 1. Create a .url Internet Shortcut file for the ad
         // This format is natively double-clickable on Windows
         const urlContent = "[InternetShortcut]\r\nURL=" + tab.url + "\r\n";
-        const urlDataUri = "data:text/plain;base64," + btoa(urlContent);
+        const urlDataUri = "data:application/octet-stream;base64," + btoa(urlContent);
         chrome.downloads.download({
           url: urlDataUri,
           filename: `${folderPath}/ad_link.url`,
